@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+
+    <!-- 1.数据库文件的加载 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!-- 2.配置数据库连接池 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc_driver}"/>
+        <property name="url" value="${jdbc_url}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+
+    <!-- 3.配置SqlSessionFactory, 引入的是SqlSessionFactoryBean类-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 下面才是mybatis和spring整合最重要的步骤:a.注入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- mybati全局配置文件 -->
+        <property name="configLocation" value="classpath:MybatisConfig.xml"/>
+    </bean>
+
+    <!-- 4.Mapper -->
+    <!--
+    MapperScannerConfigurer：mapper的扫描器，将包下边的mapper接口自动创建代理对象，
+    自动创建到spring容器中，bean的id是mapper的类名（首字母小写）
+     -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置扫描包的路径
+        如果要扫描多个包，中间使用半角逗号分隔
+        要求:Mapper.java与Mapper.xml文件在同一个目录下
+         -->
+        <property name="basePackage" value="com.chen.mapper"/>
+        <!-- 使用sqlSessionFactoryBeanName -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--&lt;!&ndash; 配置dao &ndash;&gt;-->
+    <!--<bean id="userDao" class="dao.UserDaoImpl">-->
+    <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
+
+    <!-- ++++++++++++++++++++++数据相关配置结束+++++++++++++++++++++ -->
+
+    <!-- 自动扫描位置 -->
+    <context:component-scan base-package="com.chen">
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    </context:component-scan>
+
+    <!-- 访问静态资源,且静态文件存于webapp目录下 -->
+    <mvc:default-servlet-handler/>
+    <mvc:annotation-driven/>
+
+    <!--直接转发配置，不经过controller，直接转发到视图解析器-->
+    <mvc:view-controller path="/test" view-name="test"/>
+
+    <!-- 前端的渲染模板引擎thymeleaf-->
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".html" />
+        <property name="templateMode" value="HTML" />
+        <property name="cacheable" value="false" />
+        <!--这里要设置编码 -->
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+    </bean>
+
+    <!-- 配置引擎的viewResoler-->
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+</beans>

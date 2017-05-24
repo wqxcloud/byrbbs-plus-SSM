@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.ArticleinfoMapper">
+
+    <!--sql语句中的#{id}与Articleinfo对象中的属性一致(但改成idd不一致也可以)-->
+    <select id="findArticleinfoById" parameterType="int" resultType="com.chen.pojo.Articleinfo">
+        select * from articleinfo where id=#{id}
+    </select>
+
+    <sql id="query_articleinfo_where">
+        <if test="article_author!=null and article_author!=''">
+            and article_author like '%${article_author}%'
+        </if>
+
+        <if test="section_names!=null">
+            <foreach collection="section_names" open="and (" close=")" item="section_name_item" separator="or">
+                section_name=#{section_name_item}
+            </foreach>
+        </if>
+
+        <if test="article_titles!=null">
+            <foreach collection="article_titles" item="article_title_item">
+                and article_title like '%${article_title_item}%'
+            </foreach>
+        </if>
+
+        <if test="article_createtime_type==1">
+            and TO_DAYS(NOW()) - TO_DAYS(article_createtime) &lt; 3
+        </if>
+        <if test="article_createtime_type==2">
+            and TO_DAYS(NOW()) - TO_DAYS(article_createtime) &lt; 7
+        </if>
+        <if test="article_createtime_type==3">
+            and TO_DAYS(NOW()) - TO_DAYS(article_createtime) &lt; 30
+        </if>
+        <if test="article_createtime_type==4">
+            and TO_DAYS(NOW()) - TO_DAYS(article_createtime) &lt; 365
+        </if>
+        order by article_createtime DESC
+    </sql>
+
+    <select id="findArticleinfosByArticleinfoQueryVo" parameterType="com.chen.pojo.ArticleinfoQueryVo"
+            resultType="com.chen.pojo.Articleinfo">
+        select * from articleinfo
+        <where>
+            <include refid="query_articleinfo_where"/>
+        </where>
+    </select>
+
+    <select id="getAll" resultType="com.chen.pojo.Articleinfo">
+        select * from articleinfo order by article_createtime DESC,article_commentnum Desc limit 100
+    </select>
+
+
+    <select id="findArticleinfosByAuthor" parameterType="java.lang.String" resultType="com.chen.pojo.Articleinfo">
+        select * from articleinfo where article_author like '%${value}%'
+    </select>
+
+</mapper>
