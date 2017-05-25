@@ -1,6 +1,8 @@
 import com.chen.pojo.Articleinfo;
+import com.chen.pojo.ArticleinfoQueryVo;
 import com.chen.service.ArticleinfoService;
-import com.chen.util.PagedResult;
+import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,10 +25,20 @@ public class TestService {
     public void testPages(){
         ArticleinfoService articleinfoService = (ArticleinfoService)applicationContext.getBean("articleinfoService");
         if(articleinfoService!=null) {
-//            List<Articleinfo>  articleinfos = articleinfoService.getAll();
-            PagedResult<Articleinfo> pagedResult = articleinfoService.queryByPage("ousness", 2, 10);//null表示查全部
-            System.out.println(pagedResult.getPageSize());
-            for(Articleinfo a:pagedResult.getDataList())
+            ArticleinfoQueryVo articleinfoQueryVo = new ArticleinfoQueryVo();
+            articleinfoQueryVo.setArticle_author("ousness");
+            PageInfo<Articleinfo> pagedResult1 = articleinfoService.queryByPage(articleinfoQueryVo, 1, 15);//null表示查全部
+            for(Articleinfo a:pagedResult1.getList())
+                System.out.println(a);
+            PageInfo<Articleinfo> pagedResult2 = articleinfoService.queryByPage(articleinfoQueryVo, 2, 15);//null表示查全部
+            for(Articleinfo a:pagedResult2.getList())
+                System.out.println(a);
+            PageInfo<Articleinfo> pagedResult3 = articleinfoService.queryByPage(articleinfoQueryVo, 3, 15);//null表示查全部
+            for(Articleinfo a:pagedResult3.getList())
+                System.out.println(a);
+            System.out.println();
+            PageInfo<Articleinfo> pagedResult = articleinfoService.queryByPage(articleinfoQueryVo, 1, 0);//null表示查全部
+            for(Articleinfo a:pagedResult.getList())
                 System.out.println(a);
         }
         else{

@@ -2,7 +2,6 @@ package com.chen.mapper;
 
 import com.chen.pojo.Articleinfo;
 import com.chen.pojo.ArticleinfoQueryVo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

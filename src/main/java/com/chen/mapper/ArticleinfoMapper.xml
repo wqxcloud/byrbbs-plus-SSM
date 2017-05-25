@@ -50,7 +50,7 @@
     </select>
 
     <select id="getAll" resultType="com.chen.pojo.Articleinfo">
-        select * from articleinfo order by article_createtime DESC,article_commentnum Desc limit 100
+        select * from articleinfo order by article_createtime DESC,article_commentnum Desc limit 20
     </select>
 
 

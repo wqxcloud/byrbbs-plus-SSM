@@ -4,9 +4,8 @@ import com.chen.mapper.ArticleinfoMapper;
 import com.chen.pojo.Articleinfo;
 import com.chen.pojo.ArticleinfoQueryVo;
 import com.chen.service.ArticleinfoService;
-import com.chen.util.BeanUtil;
-import com.chen.util.PagedResult;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,11 +29,12 @@ public class ArticleinfoServiceImpl implements ArticleinfoService{
         return this.articleinfoMapper.findArticleinfosByArticleinfoQueryVo(articleinfoQueryVo);
     }
 
-    public PagedResult<Articleinfo> queryByPage(String author, Integer pageNo, Integer pageSize){
-        pageNo = pageNo==null?1:pageNo;
-        pageSize = pageSize == null?10:pageSize;
+    public PageInfo<Articleinfo> queryByPage(ArticleinfoQueryVo articleinfoQueryVo, Integer pageNo, Integer pageSize){
+        pageNo = (pageNo==null||pageNo<1)?1:pageNo;
+        pageSize = (pageSize == null||pageNo<1)?10:pageSize;
         PageHelper.startPage(pageNo,pageSize);//startPage是告诉拦截器说我要开始分页了。分页参数是这两个。
-        return BeanUtil.toPagedResult(articleinfoMapper.findArticleinfosByAuthor(author));
+        List<Articleinfo> list = articleinfoMapper.findArticleinfosByArticleinfoQueryVo(articleinfoQueryVo);
+        return new PageInfo<Articleinfo>(list);
     }
 
 }

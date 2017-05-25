@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+</head>
+<body>
+<h2>test1</h2>
+<p th:text="#{home.welcome}" >This text will not be show! </p>
+<li><a href="userprofile.html" th:href="@{/userprofile}"
+>See User Profile</a></li>
+</body>
+</html>
