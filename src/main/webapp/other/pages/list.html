@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>section_name</th>
+        <th>article_title</th>
+        <th>article_url</th>
+        <th>article_createtime</th>
+        <th>article_commentnum</th>
+        <th>article_author</th>
+    </tr>
+    <tr th:each="info:${pageInfo.getList()}">
+        <td th:text="${info.getId()}">a</td>
+        <td th:text="${info.getSection_name()}">b</td>
+        <td th:text="${info.getArticle_title()}"></td>
+        <td th:text="${info.getArticle_url()}"></td>
+        <td th:text="${info.getArticle_createtime()}"></td>
+        <td th:text="${info.getArticle_commentnum()}"></td>
+        <td th:text="${info.getArticle_author()}"></td>
+    </tr>
+</table>
+
+<!--<nav aria-label="Page navigation">-->
+    <!--<ul class="pagination">-->
+        <!--<li><a href="#">&laquo;</a></li>-->
+        <!--<li class="active"><a href="#">1</a></li>-->
+        <!--<li class="disabled"><a href="#">2</a></li>-->
+        <!--<li><a href="#">3</a></li>-->
+        <!--<li><a href="#">4</a></li>-->
+        <!--<li><a href="#">5</a></li>-->
+        <!--<li><a href="#">&raquo;</a></li>-->
+    <!--</ul>-->
+<!--</nav>-->
+
+
+<!-- 处理页数大于7 的情况 -->
+<ul class="pagination" data-th-if="${pageInfo.getPages() gt 7}" >
+    <!-- 上一页 -->
+    <li class="page-item" data-th-classappend="${pageInfo.isFirstPage} ? 'disabled' : ''">
+        <a href="#" class="page-link">«</a>
+    </li>
+
+    <!-- 首页 -->
+    <li class="page-item" data-th-classappend="${pageInfo.isFirstPage} ? 'active' : ''" >
+        <a href="javascript:void(0);" class="page-link">1</a>
+    </li>
+
+
+    <!-- 当前页面小于6 -->
+    <li class="page-item" data-th-if="${pageInfo.getPageNum() le 6}" data-th-each="i : ${#numbers.sequence(2,5)}"
+        data-th-classappend="${pageInfo.getPageNum() eq i} ? 'active' : ''" >
+        <a class="page-link" href="page/${i}">
+            <span data-th-text="${i}"></span>
+        </a>
+    </li>
+
+    <li class="page-item disabled" data-th-if="${pageInfo.getPageNum() le 6}">
+        <a href="javascript:void(0);" class="page-link">
+            <span aria-hidden="true">...</span>
+        </a>
+    </li>
+
+
+
+    <!-- 最后一页与当前页面之差，小于等于3 -->
+    <li class="page-item disabled" data-th-if="${(pageInfo.getPages()-(pageInfo.getPageNum() + 1)) le 3}">
+        <a href="javascript:void(0);" class="page-link">
+            <span aria-hidden="true">...</span>
+        </a>
+    </li>
+    <li class="page-item" data-th-if="${(pageInfo.getPages()-(pageInfo.getPageNum() + 1)) le 3}" data-th-each="i : ${#numbers.sequence(pageInfo.getPages()-4, pageInfo.getPages()-1)}"
+        data-th-classappend="${(pageInfo.getPageNum() + 1) eq i} ? 'active' : ''" >
+        <a class="page-link" href="javascript:void(0);">
+            <span data-th-text="${i}"></span>
+        </a>
+    </li>
+
+    <!-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+
+    <li class="page-item disabled" data-th-if="${((pageInfo.getPageNum() + 1) gt 4) && ((pageInfo.getPages()-(pageInfo.getPageNum() + 1)) gt 3 )}">
+        <a href="javascript:void(0);" class="page-link">
+            <span aria-hidden="true">...</span>
+        </a>
+    </li>
+    <li class="page-item" data-th-if="${((pageInfo.getPageNum() + 1) gt 4) && ((pageInfo.getPages()-(pageInfo.getPageNum() + 1)) gt 3 )}" >
+        <a href="javascript:void(0);" class="page-link" data-th-attr="pageIndex=${pageInfo.getPageNum()}">[[${pageInfo.getPageNum()}]]</a>
+    </li>
+    <li class="page-item active" data-th-if="${((pageInfo.getPageNum() + 1) gt 4) && ((pageInfo.getPages()-(pageInfo.getPageNum() + 1)) gt 3 )}">
+        <a href="javascript:void(0);" class="page-link" data-th-attr="pageIndex=${pageInfo.getPageNum()} + 1">[[${pageInfo.getPageNum() + 1}]]</a>
+    </li>
+    <li class="page-item" data-th-if="${((pageInfo.getPageNum() + 1) gt 4) && ((pageInfo.getPages()-(pageInfo.getPageNum() + 1)) gt 3 )}">
+        <a href="javascript:void(0);" class="page-link" data-th-attr="pageIndex=${pageInfo.getPageNum()} + 2">[[${pageInfo.getPageNum() + 2}]]</a>
+    </li>
+
+    <li class="page-item disabled"  data-th-if="${((pageInfo.getPageNum() + 1) gt 4) && ((pageInfo.getPages()-(pageInfo.getPageNum() + 1)) gt 3 )}">
+        <a href="javascript:void(0);" class="page-link">
+            <span aria-hidden="true">...</span>
+        </a>
+    </li>
+
+    <!-- 最后一页 -->
+    <li class="page-item" data-th-classappend="${(pageInfo.getPageNum() + 1) eq pageInfo.getPages()} ? 'active' : ''" >
+        <a href="javascript:void(0);" class="page-link" data-th-attr="pageIndex=${pageInfo.getPages()} - 1">[[${pageInfo.getPages()}]]</a>
+    </li>
+
+    <!-- 下一页 -->
+    <li class="page-item" data-th-classappend="*{pageInfo.isLastPage} ? 'disabled' : ''">
+        <a href="javascript:void(0);" class="page-link" data-th-attr="pageIndex=${pageInfo.getPageNum()} + 1" aria-label="Next">
+            <span aria-hidden="true">»</span>
+        </a>
+    </li>
+</ul>
+
+
+
+
+
+
+<script th:src="@{../static/bootstrap/js/jquery-1.12.4-min.js}"></script>
+<script th:src="@{../static/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

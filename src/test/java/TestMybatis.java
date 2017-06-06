@@ -20,12 +20,12 @@ public class TestMybatis {
         applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
     }
 
-    @Test
-    public void testGetInfoById() throws Exception{
-        ArticleinfoMapper articleinfoMapper = (ArticleinfoMapper)applicationContext.getBean("articleinfoMapper");
-        Articleinfo articleinfo = articleinfoMapper.findArticleinfoById(1);
-        System.out.println(articleinfo);
-    }
+//    @Test
+//    public void testGetInfoById() throws Exception{
+//        ArticleinfoMapper articleinfoMapper = (ArticleinfoMapper)applicationContext.getBean("articleinfoMapper");
+//        Articleinfo articleinfo = articleinfoMapper.findArticleinfoById(1);
+//        System.out.println(articleinfo);
+//    }
 
     @Test
     public void testGetInfosByQueryVo() throws Exception{
@@ -55,11 +55,11 @@ public class TestMybatis {
             System.out.println(articleinfo);
     }
 
-    @Test
-    public void testGetAll() throws Exception {
-        ArticleinfoMapper articleinfoMapper = (ArticleinfoMapper) applicationContext.getBean("articleinfoMapper");
-        List<Articleinfo> articleinfos = articleinfoMapper.getAll();
-        for (Articleinfo articleinfo:articleinfos)
-            System.out.println(articleinfo);
-    }
+//    @Test
+//    public void testGetAll() throws Exception {
+//        ArticleinfoMapper articleinfoMapper = (ArticleinfoMapper) applicationContext.getBean("articleinfoMapper");
+//        List<Articleinfo> articleinfos = articleinfoMapper.getAll();
+//        for (Articleinfo articleinfo:articleinfos)
+//            System.out.println(articleinfo);
+//    }
 }

@@ -66,29 +66,42 @@
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven/>
 
+    <!--<mvc:resources location="/image/" mapping="/image/**"/>-->
+    <!--<mvc:resources location="/static/" mapping="/static/**"/>-->
+    <!--<mvc:resources location="/bootstrap/" mapping="/bootstrap/**"/>-->
+
+
     <!--直接转发配置，不经过controller，直接转发到视图解析器-->
-    <mvc:view-controller path="/test" view-name="test"/>
+    <mvc:view-controller path="/index_v1" view-name="index_v1"/>
+    <mvc:view-controller path="/table_bootstrap" view-name="table_bootstrap"/>
+    <mvc:view-controller path="/table_data_tables" view-name="table_data_tables"/>
 
     <!-- 前端的渲染模板引擎thymeleaf-->
-    <bean id="templateResolver"
-          class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
-        <property name="prefix" value="/WEB-INF/pages/" />
-        <property name="suffix" value=".html" />
-        <property name="templateMode" value="HTML" />
-        <property name="cacheable" value="false" />
-        <!--这里要设置编码 -->
-        <property name="characterEncoding" value="UTF-8"/>
-    </bean>
+    <!--<bean id="templateResolver"-->
+          <!--class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">-->
+        <!--<property name="prefix" value="/pages/" />-->
+        <!--<property name="suffix" value=".html" />-->
+        <!--<property name="templateMode" value="HTML" />-->
+        <!--<property name="cacheable" value="false" />-->
+        <!--&lt;!&ndash;这里要设置编码 &ndash;&gt;-->
+        <!--<property name="characterEncoding" value="UTF-8"/>-->
+    <!--</bean>-->
 
-    <bean id="templateEngine"
-          class="org.thymeleaf.spring4.SpringTemplateEngine">
-        <property name="templateResolver" ref="templateResolver" />
-    </bean>
+    <!--<bean id="templateEngine"-->
+          <!--class="org.thymeleaf.spring4.SpringTemplateEngine">-->
+        <!--<property name="templateResolver" ref="templateResolver" />-->
+    <!--</bean>-->
 
-    <!-- 配置引擎的viewResoler-->
-    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine" />
-        <property name="characterEncoding" value="UTF-8"/>
+    <!--&lt;!&ndash; 配置引擎的viewResoler&ndash;&gt;-->
+    <!--<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">-->
+        <!--<property name="templateEngine" ref="templateEngine" />-->
+        <!--<property name="characterEncoding" value="UTF-8"/>-->
+    <!--</bean>-->
+
+     <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/pages/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
 
 </beans>
