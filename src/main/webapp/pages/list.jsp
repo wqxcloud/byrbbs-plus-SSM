@@ -76,14 +76,14 @@
             <br>
             <div style="width:100%;text-align:center">
 
-                <form role="form" class="form-inline">
+                <form role="form" class="form-inline" action="${pageContext.request.contextPath}/find">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label><input type="email" class="form-control"
-                                                                                    id="exampleInputEmail1"/>
+                        <label for="author">Author:</label><input type="text" name="author" class="form-control"
+                                                                                    id="author" placeholder="${articleinfoQueryVo.article_author}"/>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label><input type="password" class="form-control"
-                                                                                  id="exampleInputPassword1"/>
+                        <label for="keyWords">keyWords:</label><input type="text" name="keyWords" class="form-control"
+                                                                                  id="keyWords" placeholder="${articleinfoQueryVo.article_titles_originalstring}"/>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

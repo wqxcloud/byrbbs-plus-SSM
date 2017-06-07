@@ -3,13 +3,12 @@ package com.chen.controller;
 import com.chen.pojo.ArticleinfoQueryVo;
 import com.chen.service.ArticleinfoService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +16,7 @@ import java.util.Map;
  *
  */
 @Controller
+@SessionAttributes("articleinfoQueryVo")
 public class ArticleinfoController {
     @Resource
     private ArticleinfoService articleinfoService;
@@ -24,6 +24,7 @@ public class ArticleinfoController {
     @RequestMapping("/firstPage")
     public String list(Map<String, Object> map) {
         ArticleinfoQueryVo articleinfoQueryVo = new ArticleinfoQueryVo();
+        map.put("articleinfoQueryVo",articleinfoQueryVo);
         map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, 10));
         return "list";
     }
@@ -38,8 +39,14 @@ public class ArticleinfoController {
         return "list";
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    public String find(@RequestParam("articleinfoQueryVo") ArticleinfoQueryVo articleinfoQueryVo, Map<String, Object> map) {
+    @RequestMapping(value = "/find")
+    public String find(@RequestParam("author") String author,@RequestParam("keyWords")String keyWords, HttpSession session,Map<String, Object> map) {
+        ArticleinfoQueryVo articleinfoQueryVo = (ArticleinfoQueryVo)session.getAttribute("articleinfoQueryVo");
+        articleinfoQueryVo.setArticle_author(author);
+        String[] strs = keyWords.split(" ");
+        List<String> words = Arrays.asList(strs);
+        articleinfoQueryVo.setArticle_titles(words);
+        articleinfoQueryVo.setArticle_titles_originalstring(keyWords);
         map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, 10));
         return "list";
     }

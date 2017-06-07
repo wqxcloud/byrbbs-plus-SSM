@@ -12,6 +12,7 @@ public class ArticleinfoQueryVo {
     private Integer article_commentnum;     //not use
     private String article_author;         //单一模糊匹配
     private List<String> article_titles;    //标题名，与的关系，模糊匹配
+    private String article_titles_originalstring;   //article_titles未截断的形式，用于前端显示
 
     public ArticleinfoQueryVo() {
         this.section_names = null;
@@ -19,14 +20,16 @@ public class ArticleinfoQueryVo {
         this.article_commentnum = null;
         this.article_author = null;
         this.article_titles = null;
+        this.article_titles_originalstring = null;
     }
 
-    public ArticleinfoQueryVo(List<String> section_names, Integer article_createtime_type, Integer article_commentnum, String article_author, List<String> article_titles) {
+    public ArticleinfoQueryVo(List<String> section_names, Integer article_createtime_type, Integer article_commentnum, String article_author, List<String> article_titles,String article_titles_originalstring) {
         this.section_names = section_names;
         this.article_createtime_type = article_createtime_type;
         this.article_commentnum = article_commentnum;
         this.article_author = article_author;
         this.article_titles = article_titles;
+        this.article_titles_originalstring = article_titles_originalstring;
     }
 
     public List<String> getSection_names() {
@@ -67,5 +70,13 @@ public class ArticleinfoQueryVo {
 
     public void setArticle_titles(List<String> article_titles) {
         this.article_titles = article_titles;
+    }
+
+    public String getArticle_titles_originalstring() {
+        return article_titles_originalstring;
+    }
+
+    public void setArticle_titles_originalstring(String article_titles_originalstring) {
+        this.article_titles_originalstring = article_titles_originalstring;
     }
 }
