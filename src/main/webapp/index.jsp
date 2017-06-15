@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -14,6 +15,10 @@
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
+
     <%
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -338,10 +343,24 @@
                     <a class="J_menuItem" href="css_animation.html"><i class="fa fa-magic"></i> <span class="nav-label">CSS动画</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">工具 </span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">个人中心 </span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a class="J_menuItem" href="form_builder.html">表单构建器</a>
-                        </li>
+                        <shiro:notAuthenticated>
+                            <li><a class="J_menuItem" href="register">注册</a>
+                            </li>
+                            <li><a class="J_menuItem" href="login">登录</a>
+                            </li>
+                        </shiro:notAuthenticated>
+                        <shiro:authenticated>
+                            <li><a class="J_menuItem">${sessionScope.userName}</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath}/changePassword">密码修改</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath}/table_data_tables">文章推送</a>
+                            </li>
+                            <li><a class="J_menuItem" href="logout">注销</a>
+                            </li>
+                        </shiro:authenticated>
                     </ul>
                 </li>
 
