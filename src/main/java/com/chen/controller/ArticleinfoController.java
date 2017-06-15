@@ -22,19 +22,33 @@ public class ArticleinfoController {
     private ArticleinfoService articleinfoService;
 
     @RequestMapping("/firstPage")
-    public String list(Map<String, Object> map) {
-        ArticleinfoQueryVo articleinfoQueryVo = new ArticleinfoQueryVo();
-        map.put("articleinfoQueryVo",articleinfoQueryVo);
-        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, 10));
+    public String list(Map<String, Object> map,HttpSession session) {
+        ArticleinfoQueryVo articleinfoQueryVo = null;
+        if(session.getAttribute("articleinfoQueryVo")==null){
+            articleinfoQueryVo = new ArticleinfoQueryVo();
+            map.put("articleinfoQueryVo",articleinfoQueryVo);
+        }
+        else{
+            articleinfoQueryVo = (ArticleinfoQueryVo)session.getAttribute("articleinfoQueryVo");
+        }
+        int pageSize = 20;
+        int pageNo = 1;
+        if(session.getAttribute("pageSize")==null)
+            session.setAttribute("pageSize",pageSize);
+        else
+            pageSize = (Integer) session.getAttribute("pageSize");
+        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, pageNo, pageSize));
         return "list";
     }
     @RequestMapping(value = "/page/{pageNo}")
     public String findByNum(@PathVariable("pageNo") Integer pageNo, HttpSession session, Map<String, Object> map) {
-        map.put("pageInfo", articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), pageNo, 10));
+        int pageSize = (Integer) session.getAttribute("pageSize");
+        map.put("pageInfo", articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), pageNo, pageSize));
         return "list";
     }
     @RequestMapping("/pageSize/{pageSize}")
     public String pageSize(@PathVariable("pageSize") Integer pageSise, HttpSession session, Map<String, Object> map){
+        session.setAttribute("pageSize",pageSise);
         map.put("pageInfo", articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), 1, pageSise));
         return "list";
     }
@@ -47,7 +61,7 @@ public class ArticleinfoController {
         List<String> words = Arrays.asList(strs);
         articleinfoQueryVo.setArticle_titles(words);
         articleinfoQueryVo.setArticle_titles_originalstring(keyWords);
-        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, 10));
+        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, (Integer)session.getAttribute("pageSize")));
         return "list";
     }
 
