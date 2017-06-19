@@ -14,9 +14,9 @@
             and article_author like '%${article_author}%'
         </if>
 
-        <if test="section_names!=null">
-            <foreach collection="section_names" open="and (" close=")" item="section_name_item" separator="or">
-                section_name=#{section_name_item}
+        <if test="section_urls!=null">
+            <foreach collection="section_urls" open="and (" close=")" item="section_url_item" separator="or">
+                section_url=#{section_url_item}
             </foreach>
         </if>
 
@@ -38,15 +38,15 @@
         <if test="article_createtime_type==4">
             and TO_DAYS(NOW()) - TO_DAYS(article_createtime) &lt; 365
         </if>
-        order by article_createtime DESC,article_commentnum Desc
+        order by article_createtime DESC,article_comment Desc
     </sql>
 
     <select id="findArticleinfosByArticleinfoQueryVo" parameterType="com.chen.pojo.ArticleinfoQueryVo"
             resultType="com.chen.pojo.Articleinfo">
         select
         <choose>
-            <when test="article_author==null and section_names==null and article_titles==null and article_createtime_type==null">
-                t.* from (select * from articleinfo order by article_createtime DESC,article_commentnum Desc limit 90) t
+            <when test="article_author==null and section_urls==null and article_titles==null and article_createtime_type==null">
+                t.* from (select * from articleinfo order by article_createtime DESC,article_comment Desc limit 90) t
             </when>
             <otherwise>
                 articleinfo.* from articleinfo
@@ -59,7 +59,7 @@
     </select>
 
     <!--<select id="getAll" resultType="com.chen.pojo.Articleinfo">-->
-        <!--select * from articleinfo order by article_createtime DESC,article_commentnum Desc limit 20-->
+        <!--select * from articleinfo order by article_createtime DESC,article_comment Desc limit 20-->
     <!--</select>-->
 
 

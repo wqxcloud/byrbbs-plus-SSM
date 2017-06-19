@@ -41,10 +41,10 @@
                 <thead>
                 <tr>
                     <th width="10%">id</th>
-                    <th width="10%">section_name</th>
+                    <th width="10%">section_url</th>
                     <th width="40%">article_title</th>
                     <th width="10%">article_createtime</th>
-                    <th width="10%">article_commentnum</th>
+                    <th width="10%">article_comment</th>
                     <th width="10%">article_author</th>
                     <th width="10%">article_url</th>
                 </tr>
@@ -53,10 +53,10 @@
                 <c:forEach items="${pageInfo.list}" var="item">
                     <tr>
                         <td>${item.id}</td>
-                        <td>${item.section_name}</td>
+                        <td>${item.section_url}</td>
                         <td>${item.article_title}</td>
-                        <td><fmt:formatDate value="${item.article_createtime}" pattern="yyyy-MM-dd"/></td>
-                        <td>${item.article_commentnum}</td>
+                        <td><fmt:formatDate value="${item.article_createtime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>${item.article_comment}</td>
                         <td>${item.article_author}</td>
                         <td><a href="${item.article_url}" class="btn btn-default" role="button" target="_blank">链接</a></td>
                     </tr>
@@ -66,8 +66,8 @@
 
             <%--分页--%>
             <div style="text-align: right">
-                <%--上拉栏--%>
                 <ul class="pagination">
+                    <%--上拉栏--%>
                     <li class="dropup">
                         <button class="btn btn-default dropdown-toggle" type="button" id="menu1"
                                 data-toggle="dropdown">${pageInfo.pageSize}条/页

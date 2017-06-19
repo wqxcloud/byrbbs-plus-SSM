@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.mapper.PushRuleMapper" >
+    <resultMap id="BaseResultMap" type="com.chen.pojo.PushRule" >
+        <result property="id" column="id"/>
+        <result property="rule_name" column="rule_name"/>
+        <result property="section_urls" column="section_urls"/>
+        <result property="article_title_include" column="article_title_include"/>
+        <result property="article_title_exclude" column="article_title_exclude"/>
+        <result property="pushtime_type" column="pushtime_type"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, rule_name, section_urls, article_title_include,article_title_exclude,pushtime_type
+    </sql>
+
+    <select id="findPushRule" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from pushrule where 1=1
+    </select>
+
+    <select id="findPushRuleById" parameterType="Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from pushrule where id=#{id}
+    </select>
+
+    <insert id="insertPushRule" parameterType="com.chen.pojo.PushRule" >
+        insert into pushrule(rule_name,section_urls, article_title_include,article_title_exclude,pushtime_type)
+        values(#{rule_name}, #{section_urls}, #{article_title_include}, #{article_title_exclude}, #{pushtime_type})
+    </insert>
+
+    <update id="updatePushRule" parameterType="com.chen.pojo.PushRule">
+        update pushrule set rule_name=#{rule_name}, section_urls=#{section_urls}, article_title_include=#{article_title_include},
+        article_title_exclude=#{article_title_exclude}, pushtime_type=#{pushtime_type} where id=#{id} limit 1
+    </update>
+
+    <delete id="deletePushRule" parameterType="Integer">
+        delete FROM pushrule where id=#{id} limit 1
+    </delete>
+
+</mapper>

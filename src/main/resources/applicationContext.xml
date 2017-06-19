@@ -74,6 +74,7 @@
     <!--直接转发配置，不经过controller，直接转发到视图解析器-->
     <mvc:view-controller path="/table_bootstrap" view-name="table_bootstrap"/>
     <mvc:view-controller path="/table_data_tables" view-name="table_data_tables"/>
+    <mvc:view-controller path="/pushrule" view-name="pushrule"/>
     <mvc:view-controller path="/login" view-name="login"/>
     <mvc:view-controller path="/register" view-name="register"/>
 

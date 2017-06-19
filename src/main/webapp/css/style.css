@@ -4977,6 +4977,20 @@ ul.notes li div a {
     color: inherit;
 }
 
+/*额外添加链接位置*/
+ul.notes li div a.left {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    color: inherit;
+}
+ul.notes li div a.left-left {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+    color: inherit;
+}
+
 ul.notes li {
     margin: 10px 40px 50px 0px;
     float: left;

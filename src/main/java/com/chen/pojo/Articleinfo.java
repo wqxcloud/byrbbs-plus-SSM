@@ -8,32 +8,32 @@ import java.util.Date;
  */
 public class Articleinfo {
     private int id;
-    private String section_name;
+    private String section_url;
     private String article_title;
     private String article_url;
     private Date article_createtime;
-    private Integer article_commentnum;
+    private Integer article_comment;
     private String article_author;
 
-    public Articleinfo(int id, String section_name, String article_title, String article_url, Date article_createtime, Integer article_commentnum, String article_author) {
+    public Articleinfo(int id, String section_url, String article_title, String article_url, Date article_createtime, Integer article_comment, String article_author) {
         this.id = id;
-        this.section_name = section_name;
+        this.section_url = section_url;
         this.article_title = article_title;
         this.article_url = article_url;
         this.article_createtime = article_createtime;
-        this.article_commentnum = article_commentnum;
+        this.article_comment = article_comment;
         this.article_author = article_author;
     }
 
     public Articleinfo() {
     }
 
-    public String getSection_name() {
-        return section_name;
+    public String getSection_url() {
+        return section_url;
     }
 
-    public void setSection_name(String section_name) {
-        this.section_name = section_name;
+    public void setSection_url(String section_url) {
+        this.section_url = section_url;
     }
 
     public String getArticle_title() {
@@ -60,12 +60,12 @@ public class Articleinfo {
         this.article_createtime = article_createtime;
     }
 
-    public Integer getArticle_commentnum() {
-        return article_commentnum;
+    public Integer getArticle_comment() {
+        return article_comment;
     }
 
-    public void setArticle_commentnum(Integer article_commentnum) {
-        this.article_commentnum = article_commentnum;
+    public void setArticle_comment(Integer article_comment) {
+        this.article_comment = article_comment;
     }
 
     public String getArticle_author() {
@@ -88,11 +88,11 @@ public class Articleinfo {
     public String toString() {
         return "Articleinfo{" +
                 "id=" + id +
-                ", section_name='" + section_name + '\'' +
+                ", section_url='" + section_url + '\'' +
                 ", article_title='" + article_title + '\'' +
                 ", article_url='" + article_url + '\'' +
                 ", article_createtime=" + article_createtime +
-                ", article_commentnum=" + article_commentnum +
+                ", article_comment=" + article_comment +
                 ", article_author='" + article_author + '\'' +
                 '}';
     }
