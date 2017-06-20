@@ -1,6 +1,6 @@
 package com.chen.mapper;
 
-import com.chen.pojo.T_user;
+import com.chen.pojo.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
@@ -10,14 +10,14 @@ import java.util.Set;
  *
  */
 @Repository
-public interface T_userMapper {
-        T_user findUserByUsername(String username);
+public interface UserMapper {
+        User findUserByUsername(String username);
 
         Set<String> findRoles(String username);
 
         Set<String> findPermissions(String username);
 
-        void insertUser(T_user user);
+        void insertUser(User user);
 
-        void updateUser(T_user user);
+        void updateUser(User user);
 }

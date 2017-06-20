@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.mapper.SectionNameMapper" >
+    <resultMap id="BaseResultMap" type="com.chen.pojo.SectionName" >
+        <result property="section_url" column="section_url"/>
+        <result property="section_name" column="section_name"/>
+        <result property="section_article_total" column="section_article_total"/>
+        <result property="top_section_num" column="top_section_num"/>
+        <result property="updatetime" column="updatetime"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        section_url, section_name, section_article_total,top_section_num,updatetime
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from section where 1=1
+    </select>
+
+
+</mapper>

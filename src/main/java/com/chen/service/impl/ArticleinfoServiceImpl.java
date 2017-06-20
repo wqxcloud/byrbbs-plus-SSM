@@ -21,17 +21,9 @@ public class ArticleinfoServiceImpl implements ArticleinfoService{
     @Resource
     private ArticleinfoMapper articleinfoMapper;
 
-//    public List<Articleinfo> getAll(){
-//        return this.articleinfoMapper.getAll();
-//    }
-
-//    public List<Articleinfo> findArticleinfosByArticleinfoQueryVo(ArticleinfoQueryVo articleinfoQueryVo){
-//        return this.articleinfoMapper.findArticleinfosByArticleinfoQueryVo(articleinfoQueryVo);
-//    }
-
     public PageInfo<Articleinfo> queryByPage(ArticleinfoQueryVo articleinfoQueryVo, Integer pageNo, Integer pageSize){
         pageNo = (pageNo==null||pageNo<1)?1:pageNo;
-        pageSize = (pageSize == null||pageSize<1)?10:pageSize;
+        pageSize = (pageSize == null||pageSize<1)?20:pageSize;
         PageHelper.startPage(pageNo,pageSize);//startPage是告诉拦截器说我要开始分页了。分页参数是这两个。
         List<Articleinfo> list = articleinfoMapper.findArticleinfosByArticleinfoQueryVo(articleinfoQueryVo);
         return new PageInfo<Articleinfo>(list);

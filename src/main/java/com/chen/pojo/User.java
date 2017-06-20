@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 后台登录User
  */
 
-public class T_user implements Serializable {
+public class User implements Serializable {
     private Integer id;
     private String userName;
     private String password;
@@ -47,7 +47,7 @@ public class T_user implements Serializable {
 
     @Override
     public String toString() {
-        return "T_user{" +
+        return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +

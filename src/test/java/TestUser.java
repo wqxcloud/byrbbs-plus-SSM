@@ -1,5 +1,5 @@
-import com.chen.mapper.T_userMapper;
-import com.chen.pojo.T_user;
+import com.chen.mapper.UserMapper;
+import com.chen.pojo.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -19,10 +19,10 @@ public class TestUser {
 
     @Test
     public void testGetInfoById() throws Exception{
-        T_userMapper t_userMapper = (T_userMapper) applicationContext.getBean("t_userMapper");
-        T_user t_user = t_userMapper.findUserByUsername("chen");
-        System.out.println(t_user);
-        System.out.println(t_userMapper.findRoles("bbb"));
-        System.out.println(t_userMapper.findPermissions("chen"));
+        UserMapper userMapper = (UserMapper) applicationContext.getBean("userMapper");
+        User user = userMapper.findUserByUsername("chen");
+        System.out.println(user);
+        System.out.println(userMapper.findRoles("bbb"));
+        System.out.println(userMapper.findPermissions("chen"));
     }
 }

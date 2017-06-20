@@ -1,7 +1,7 @@
 package com.chen.controller;
 
-import com.chen.pojo.T_user;
-import com.chen.service.T_userService;
+import com.chen.pojo.User;
+import com.chen.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -15,14 +15,14 @@ import java.util.Map;
 
 /**
  * Created by ryder on 2017/6/14.
- * 后台Controller
+ *
  */
 @Controller
-public class T_userController {
+public class UserController {
     @Resource
-    private T_userService t_userService ;
+    private UserService userService;
     @RequestMapping("/loginAdmin")
-    public String login(T_user user, Map<String, Object> map, HttpSession session){
+    public String login(User user, Map<String, Object> map, HttpSession session){
         //todo:忘记密码页面；添加邮箱注册码认证
         Subject subject = SecurityUtils.getSubject() ;
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(),user.getPassword()) ;
@@ -46,7 +46,7 @@ public class T_userController {
 
     @RequestMapping("/registerAdmin")
     public String register(@RequestParam("userName")String userName, @RequestParam("password")String password,@RequestParam("password2")String password2,Map<String, Object> map){
-        if(t_userService.findUserByUsername(userName)!=null){
+        if(userService.findUserByUsername(userName)!=null){
             map.put("errorUserName","用户创建失败：该邮箱已被注册过") ;
             //如果使用重定向，前端无法得到map的内容
             return "register";
@@ -56,17 +56,17 @@ public class T_userController {
             return "register";
         }
         else {
-            T_user new_user = new T_user();
+            User new_user = new User();
             new_user.setUserName(userName);
             new_user.setPassword(password);
-            t_userService.insertUser(new_user);
+            userService.insertUser(new_user);
             return "forward:/loginAdmin";
         }
     }
 
     @RequestMapping("/changePassword")
     public String changePassword(Map<String,Object> map){
-        T_user user = t_userService.findUserByUsername((String) SecurityUtils.getSubject().getPrincipal());
+        User user = userService.findUserByUsername((String) SecurityUtils.getSubject().getPrincipal());
         map.put("user",user);
         return "change_password";
     }
@@ -75,20 +75,19 @@ public class T_userController {
     public String changedPassword(@RequestParam("password")String password,@RequestParam("password2")String password2,Map<String, Object> map){
         if(!password.equals(password2)){
             map.put("error","密码修改失败：两次密码不一致") ;
-            T_user user = t_userService.findUserByUsername((String) SecurityUtils.getSubject().getPrincipal());
+            User user = userService.findUserByUsername((String) SecurityUtils.getSubject().getPrincipal());
             map.put("user",user);
             return "change_password";
         }
         else{
-            T_user updated_user = new T_user();
+            User updated_user = new User();
             updated_user.setUserName((String) SecurityUtils.getSubject().getPrincipal());
             updated_user.setPassword(password);
-            t_userService.updateUser(updated_user);
+            userService.updateUser(updated_user);
             UsernamePasswordToken token = new UsernamePasswordToken(updated_user.getUserName(),updated_user.getPassword()) ;
             SecurityUtils.getSubject().login(token);
             map.put("user",updated_user);
             return "change_password";
         }
     }
-
 }

@@ -1,7 +1,13 @@
 package com.chen.controller;
 
+import com.chen.mapper.SectionNameMapper;
+import com.chen.pojo.Articleinfo;
 import com.chen.pojo.ArticleinfoQueryVo;
+import com.chen.pojo.SectionName;
 import com.chen.service.ArticleinfoService;
+import com.chen.service.SectionNameService;
+import com.chen.service.impl.SectionNameServiceImpl;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -19,13 +25,19 @@ import java.util.Map;
 public class ArticleinfoController {
     @Resource
     private ArticleinfoService articleinfoService;
+    @Resource
+    private SectionNameService sectionNameService;
 
+    public volatile Map<String,SectionName>  sectionUrlToName;
     @RequestMapping("/firstPage")
     public String list(Map<String, Object> map,HttpSession session) {
         ArticleinfoQueryVo articleinfoQueryVo = null;
+
+        sectionUrlToName = sectionNameService.UrlToNameMap();
         if(session.getAttribute("articleinfoQueryVo")==null){
             articleinfoQueryVo = new ArticleinfoQueryVo();
             map.put("articleinfoQueryVo",articleinfoQueryVo);
+
         }
         else{
             articleinfoQueryVo = (ArticleinfoQueryVo)session.getAttribute("articleinfoQueryVo");
@@ -36,7 +48,14 @@ public class ArticleinfoController {
             session.setAttribute("pageSize",pageSize);
         else
             pageSize = (Integer) session.getAttribute("pageSize");
-        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, pageNo, pageSize));
+        PageInfo<Articleinfo> pageInfo = articleinfoService.queryByPage(articleinfoQueryVo, pageNo, pageSize);
+        for(int i=0;i<pageInfo.getList().size();i++){
+            Articleinfo articleinfo = pageInfo.getList().get(i);
+            //此处的setSection_url已经转换为setSection_name
+            articleinfo.setSection_url(sectionUrlToName.get(articleinfo.getSection_url()).getSection_name());
+            pageInfo.getList().set(i,articleinfo);
+        }
+        map.put("pageInfo", pageInfo);
         return "list";
     }
     @RequestMapping(value = "/page/{pageNo}")

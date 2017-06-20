@@ -1,14 +1,12 @@
 package com.chen.service.impl;
 
 import com.chen.mapper.PushRuleMapper;
-import com.chen.mapper.T_userMapper;
 import com.chen.pojo.PushRule;
 import com.chen.service.PushRuleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by ryder on 2017/6/19.
