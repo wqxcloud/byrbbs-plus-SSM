@@ -49,25 +49,24 @@ public class ArticleinfoController {
         else
             pageSize = (Integer) session.getAttribute("pageSize");
         PageInfo<Articleinfo> pageInfo = articleinfoService.queryByPage(articleinfoQueryVo, pageNo, pageSize);
-        for(int i=0;i<pageInfo.getList().size();i++){
-            Articleinfo articleinfo = pageInfo.getList().get(i);
-            //此处的setSection_url已经转换为setSection_name
-            articleinfo.setSection_url(sectionUrlToName.get(articleinfo.getSection_url()).getSection_name());
-            pageInfo.getList().set(i,articleinfo);
-        }
+        pageInfoSectionUrlToName(pageInfo);
         map.put("pageInfo", pageInfo);
         return "list";
     }
     @RequestMapping(value = "/page/{pageNo}")
     public String findByNum(@PathVariable("pageNo") Integer pageNo, HttpSession session, Map<String, Object> map) {
         int pageSize = (Integer) session.getAttribute("pageSize");
-        map.put("pageInfo", articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), pageNo, pageSize));
+        PageInfo<Articleinfo> pageInfo = articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), pageNo, pageSize);
+        pageInfoSectionUrlToName(pageInfo);
+        map.put("pageInfo", pageInfo);
         return "list";
     }
     @RequestMapping("/pageSize/{pageSize}")
     public String pageSize(@PathVariable("pageSize") Integer pageSise, HttpSession session, Map<String, Object> map){
         session.setAttribute("pageSize",pageSise);
-        map.put("pageInfo", articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), 1, pageSise));
+        PageInfo<Articleinfo> pageInfo = articleinfoService.queryByPage((ArticleinfoQueryVo) session.getAttribute("articleinfoQueryVo"), 1, pageSise);
+        pageInfoSectionUrlToName(pageInfo);
+        map.put("pageInfo",pageInfo);
         return "list";
     }
 
@@ -79,8 +78,20 @@ public class ArticleinfoController {
         List<String> words = Arrays.asList(strs);
         articleinfoQueryVo.setArticle_titles(words);
         articleinfoQueryVo.setArticle_titles_originalstring(keyWords);
-        map.put("pageInfo", articleinfoService.queryByPage(articleinfoQueryVo, 1, (Integer)session.getAttribute("pageSize")));
+
+        PageInfo<Articleinfo> pageInfo = articleinfoService.queryByPage(articleinfoQueryVo, 1, (Integer)session.getAttribute("pageSize"));
+        pageInfoSectionUrlToName(pageInfo);
+        map.put("pageInfo", pageInfo);
         return "list";
+    }
+
+    private void pageInfoSectionUrlToName(PageInfo<Articleinfo> pageInfo){
+        for(int i=0;i<pageInfo.getList().size();i++){
+            Articleinfo articleinfo = pageInfo.getList().get(i);
+            //此处的setSection_url已经转换为setSection_name
+            articleinfo.setSection_url(sectionUrlToName.get(articleinfo.getSection_url()).getSection_name());
+            pageInfo.getList().set(i,articleinfo);
+        }
     }
 
 }

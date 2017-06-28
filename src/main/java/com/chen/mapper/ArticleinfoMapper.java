@@ -31,8 +31,6 @@ public interface ArticleinfoMapper {
      * @throws Exception
      */
     List<Articleinfo> findArticleinfosByArticleinfoQueryVo( ArticleinfoQueryVo articleinfoQueryVo);
-
-
 //    List<Articleinfo> getAll();
 //    List<Articleinfo> findArticleinfosByAuthor(String author);
 //    List<Articleinfo> findArticleinfosByAuthor(@Param("author") String author);
