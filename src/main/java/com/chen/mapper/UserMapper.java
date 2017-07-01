@@ -11,6 +11,8 @@ import java.util.Set;
  */
 @Repository
 public interface UserMapper {
+        User findUserById(Integer id);
+
         User findUserByUsername(String username);
 
         Set<String> findRoles(String username);

@@ -10,6 +10,11 @@ import java.util.Set;
  */
 public interface UserService {
     /**
+     * Shiro的登录验证，通过id查询用户信息
+     */
+    public User findUserById(Integer id) ;
+
+    /**
      * Shiro的登录验证，通过用户名查询用户信息
      */
     public User findUserByUsername(String username) ;

@@ -21,12 +21,12 @@ public class SectionNameServiceImpl implements SectionNameService {
     private  Map<String,SectionName> map = null;
     private volatile static boolean flag = false;
     public Map<String,SectionName> UrlToNameMap() {
-        //使用双检锁
+        //使用双检锁完成单例
         if(!flag) {
             synchronized (SectionNameServiceImpl.class) {
                 if(!flag) {
                     List<SectionName> list = sectionNameMapper.findAll();
-                    map = new HashMap<String, SectionName>();
+                    map = new HashMap<>();
                     for (SectionName sectionName : list) {
                         map.put(sectionName.getSection_url(), sectionName);
                     }

@@ -1,12 +1,14 @@
 package com.chen.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by ryder on 2017/5/22.
  *
  */
-public class Articleinfo {
+public class Articleinfo implements Serializable{
+    private static final long serialVersionUID = 8685376332711481990L;
     private int id;
     private String section_url;
     private String article_title;

@@ -15,6 +15,7 @@ import java.util.Map;
  */
 @Controller()
 public class PushRuleController {
+    //todo:是否允许普通用户创建？
     @Resource
     private PushRuleService pushRuleService;
 
