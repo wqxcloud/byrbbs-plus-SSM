@@ -28,7 +28,7 @@ public class ArticleinfoController {
     @Resource
     private SectionNameService sectionNameService;
 
-    public volatile Map<String,SectionName>  sectionUrlToName;
+    public Map<String,SectionName>  sectionUrlToName;
     @RequestMapping("/firstPage")
     public String list(Map<String, Object> map,HttpSession session) {
         ArticleinfoQueryVo articleinfoQueryVo = null;

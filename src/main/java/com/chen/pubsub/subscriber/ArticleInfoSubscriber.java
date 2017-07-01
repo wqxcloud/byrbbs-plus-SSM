@@ -1,5 +1,6 @@
 package com.chen.pubsub.subscriber;
 
+import com.chen.email.ArticleInfoEmail;
 import com.chen.pojo.Articleinfo;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -7,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -15,6 +17,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  */
 public class ArticleInfoSubscriber implements MessageListener {
+    @Resource
+    private ArticleInfoEmail articleInfoEmail;
     private final ConcurrentLinkedQueue<Articleinfo> rows = new ConcurrentLinkedQueue<>();
     private String name;
     private RedisTemplate<Serializable,Serializable> redisTemplate;
@@ -49,8 +53,12 @@ public class ArticleInfoSubscriber implements MessageListener {
 
         //一个存在于section_url中的特殊命令,用来表示发布结束，可以发送邮件了
         if("send_email".equals(articleinfo.getSection_url())){
-            System.out.println("发送邮件");
-            //todo:发送邮件
+//            System.out.println("发送邮件");
+            articleInfoEmail.init(name);
+            while (!rows.isEmpty()){
+                articleInfoEmail.add(rows.poll());
+            }
+            articleInfoEmail.send();
         }
         else {
             System.out.println("用户："+name+",在channel："+channel+",收到内容："+articleinfo);

@@ -57,10 +57,10 @@ public class SubManager {
             }
         }
 //        在启动时测试订阅发布功能
-        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
-        MessagePublisher messagePublisher = new MessagePublisher("publish1",redisTemplate);
-        messagePublisher.publishMessage("1",articleinfo);
-        messagePublisher.publishMessage("1",MessagePublisher.SEND_EMAIL);
+//        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
+//        MessagePublisher messagePublisher = new MessagePublisher("publish1",redisTemplate);
+//        messagePublisher.publishMessage("1",articleinfo);
+//        messagePublisher.publishMessage("1",MessagePublisher.SEND_EMAIL);
     }
 
     //从数据库读取的订阅信息，无需再写入数据库

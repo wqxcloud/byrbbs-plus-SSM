@@ -1,18 +1,22 @@
+import com.chen.email.ArticleInfoEmail;
+import com.chen.pojo.Articleinfo;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Created by ryder on 2017/6/16.
  *
  */
 public class TestCommonsMail {
-    public void test1() throws Exception{
+    public void test_self() throws Exception{
         HtmlEmail email = new HtmlEmail();
         email.setHostName("smtp.126.com");
         email.setSmtpPort(25);
@@ -52,7 +56,8 @@ public class TestCommonsMail {
         // send the email
         email.send();
     }
-    public static void main(String[] args) throws Exception{
+    @Test
+    public void test_getBean() throws Exception{
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         HtmlEmail htmlEmail = applicationContext.getBean(HtmlEmail.class);
         htmlEmail.addTo("593191130@qq.com", "我的QQ邮箱");
@@ -79,6 +84,35 @@ public class TestCommonsMail {
                 "\n" +
                 "</body>\n" +
                 "</html>"+a+"</html>");
+        htmlEmail.send();
+    }
+
+    @Test
+    public void test_emal_module() throws Exception{
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ArticleInfoEmail email1 = applicationContext.getBean(ArticleInfoEmail.class);
+        ArticleInfoEmail email2 = applicationContext.getBean(ArticleInfoEmail.class);
+        if(email1==email2)
+            System.out.println("相同");
+        else
+            System.out.println("不同");
+
+        HtmlEmail email3 = applicationContext.getBean(HtmlEmail.class);
+        HtmlEmail email4 = applicationContext.getBean(HtmlEmail.class);
+        if(email3==email4)
+            System.out.println("相同");
+        else
+            System.out.println("不同");
+    }
+
+    @Test
+    public void test_emal_object() throws Exception {
+        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ArticleInfoEmail email = applicationContext.getBean(ArticleInfoEmail.class);
+        email.init("593191130@qq.com");
+        email.add(articleinfo);
+        email.send();
     }
 }
 
