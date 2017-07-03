@@ -152,7 +152,7 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
-    <!-- ++++++++++++++++++++++redis配置+++++++++++++++++++++ -->
+    <!-- ++++++++++++++++++++++redis配置,发布订阅+++++++++++++++++++++ -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.pool.maxTotal}"/>
         <property name="maxIdle" value="${redis.pool.maxIdle}"/>
@@ -192,6 +192,7 @@
     <bean id="subManager" class="com.chen.pubsub.manager.SubManager" init-method="initfunc"/>
     <!-- ++++++++++++++++++++redis配置结束++++++++++++++++++++ -->
 
+    <!-- ++++++++++++++++++++++发邮件相关++++++++++++++++++++ -->
     <bean id="htmlEmal" class="org.apache.commons.mail.HtmlEmail" scope="prototype">
         <property name="hostName" value="${commons.email.hostName}"/>
         <property name="smtpPort" value="${commons.email.smtpPort}"/>
@@ -207,5 +208,7 @@
         <property name="textMsg" value="${commons.email.textMsg}"/>
     </bean>
 
+    <!-- ++++++++++++++++++++每日新帖消息更新相关，生产消费者++++++++++++++++++++ -->
+    <bean id="articleinforUpdateManager" class="com.chen.pubsub.updater.ArticleinfoUpdateManager" init-method="init"/>
 
 </beans>

@@ -14,5 +14,7 @@ class TestInitClass{
 public class TestInit {
     public static void main(String[] args){
         new TestInitClass();
+        String[] result = "".split(" ");
+        System.out.println(result.length);
     }
 }

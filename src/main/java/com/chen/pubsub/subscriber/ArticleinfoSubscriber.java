@@ -16,13 +16,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by ryder on 2017/6/30.
  *
  */
-public class ArticleInfoSubscriber implements MessageListener {
+public class ArticleinfoSubscriber implements MessageListener {
     @Resource
     private ArticleInfoEmail articleInfoEmail;
+    //todo:修改为可自动排序的结构
     private final ConcurrentLinkedQueue<Articleinfo> rows = new ConcurrentLinkedQueue<>();
     private String name;
     private RedisTemplate<Serializable,Serializable> redisTemplate;
-    public ArticleInfoSubscriber(String name, RedisTemplate<Serializable, Serializable> redisTemplate) {
+    public ArticleinfoSubscriber(String name, RedisTemplate<Serializable, Serializable> redisTemplate) {
         this.name = name;
         this.redisTemplate = redisTemplate;
     }
