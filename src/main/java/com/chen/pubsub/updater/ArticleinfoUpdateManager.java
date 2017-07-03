@@ -14,34 +14,91 @@ import java.util.concurrent.*;
  *
  */
 public class ArticleinfoUpdateManager {
-    @Resource
     private SubManager subManager;
+    private MessagePublisher messagePublisher;
+    private Consumer[] consumers;
+    private Producer producer;
+    private int THREAD_SIZE;
+    private ExecutorService fixedThreadPool;
+
     private ConcurrentLinkedQueue<Articleinfo> queue = new ConcurrentLinkedQueue<>();
     private ConcurrentHashMap<String,PushRule> pushRules = null;
-    private Producer producer = null;
-    private int THREAD_SIZE = 10;
-    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
+
+    public SubManager getSubManager() {
+        return subManager;
+    }
+
+    public Producer getProducer() {
+        return producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = producer;
+    }
+
+    public ConcurrentLinkedQueue<Articleinfo> getQueue() {
+        return queue;
+    }
+
+    public void setQueue(ConcurrentLinkedQueue<Articleinfo> queue) {
+        this.queue = queue;
+    }
+
+    public void setSubManager(SubManager subManager) {
+        this.subManager = subManager;
+    }
+
+    public MessagePublisher getMessagePublisher() {
+        return messagePublisher;
+    }
+
+    public void setMessagePublisher(MessagePublisher messagePublisher) {
+        this.messagePublisher = messagePublisher;
+    }
+
+    public Consumer[] getConsumers() {
+        return consumers;
+    }
+
+    public void setConsumers(Consumer[] consumers) {
+        this.consumers = consumers;
+    }
+
+    public int getTHREAD_SIZE() {
+        return THREAD_SIZE;
+    }
+
+    public void setTHREAD_SIZE(int THREAD_SIZE) {
+        this.THREAD_SIZE = THREAD_SIZE;
+    }
 
     private void init(){
         pushRules = subManager.getPushrules();
-        producer = new Producer(queue);
+        fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
     }
     //定时执行此方法
-    public void update() throws Exception{
+    public void update(){
         producer.run();
+        //todo：还没改回去
         for(int i=0;i<1;i++) {
-            fixedThreadPool.execute(new Consumer(queue,pushRules,new MessagePublisher(subManager.getRedisTemplate())));
+            consumers[i].setQueue(queue);
+            consumers[i].setPushRules(pushRules);
+            fixedThreadPool.execute(consumers[i]);
         }
         //调用shutdown()时，ExecutorService 并不会马上关闭，而是不再接收新的任务
         //所以，在调用 shutdown() 方法之前提交到 ExecutorService 的任务都会执行
         fixedThreadPool.shutdown();
         while(true){
             if(!fixedThreadPool.isTerminated()){
-                new MessagePublisher(subManager.getRedisTemplate()).broadcast(pushRules.keys(),MessagePublisher.SEND_EMAIL);
+                messagePublisher.broadcast(pushRules.keys(),MessagePublisher.SEND_EMAIL);
                 break;
             }
             else{
-                Thread.sleep(1000);
+                try {
+                    Thread.sleep(1000);
+                }
+                catch (Exception e){
+                }
             }
         }
 

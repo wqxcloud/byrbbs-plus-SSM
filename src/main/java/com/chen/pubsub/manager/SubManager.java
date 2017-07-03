@@ -1,5 +1,6 @@
 package com.chen.pubsub.manager;
 
+import com.chen.email.ArticleinfoEmail;
 import com.chen.pojo.Articleinfo;
 import com.chen.pojo.PushRule;
 import com.chen.pojo.User;
@@ -8,9 +9,14 @@ import com.chen.pubsub.subscriber.ArticleinfoSubscriber;
 import com.chen.pubsub.updater.ArticleinfoUpdateManager;
 import com.chen.service.PushRuleService;
 import com.chen.service.UserService;
+import com.chen.util.SpringConfigTool;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Date;
@@ -36,10 +42,8 @@ public class SubManager {
     private PushRuleService pushRuleService;
     @Resource
     private UserService userService;
-
     @Resource
-    private ArticleinfoUpdateManager articleinfoUpdateManager;
-
+    private SpringConfigTool springConfigTool;
     private SubManager() {
     }
 
@@ -50,6 +54,9 @@ public class SubManager {
     public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
         return redisTemplate;
     }
+
+    @Resource
+    ArticleinfoSubscriber articleinfoSubscriber;
 
     private void initfunc(){
         List<PushRule> rules = pushRuleService.findPushRule();
@@ -64,7 +71,11 @@ public class SubManager {
                         addSubInit(channelName, useridToSubscriber.get(subscriberId));
                     } else {
                         User user = userService.findUserById(Integer.parseInt(subscriberId));
-                        ArticleinfoSubscriber newSubscriber = new ArticleinfoSubscriber(user.getUserName(), redisTemplate);//user表格的userName就是邮箱地址
+//                        ArticleinfoSubscriber newSubscriber = new ArticleinfoSubscriber(redisTemplate);//user表格的userName就是邮箱地址
+//                        ArticleinfoSubscriber newSubscriber = (ArticleinfoSubscriber)springConfigTool.getBean("articleinfoSubscriber");
+                        //todo:还没改回去
+                        ArticleinfoSubscriber newSubscriber = articleinfoSubscriber;
+                        newSubscriber.setName(user.getUserName());
                         useridToSubscriber.put(subscriberId, newSubscriber);
                         addSubInit(channelName, newSubscriber);
                     }
@@ -72,10 +83,10 @@ public class SubManager {
             }
         }
 //        在启动时测试订阅发布功能
-        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
-        MessagePublisher messagePublisher = new MessagePublisher(redisTemplate);
-        messagePublisher.publishMessage("1",articleinfo);
-        messagePublisher.publishMessage("1",MessagePublisher.SEND_EMAIL);
+//        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
+//        MessagePublisher messagePublisher = new MessagePublisher(redisTemplate);
+//        messagePublisher.publishMessage("1",articleinfo);
+//        messagePublisher.publishMessage("1",MessagePublisher.SEND_EMAIL);
 
 //        在启动时测试生产消费-订阅发布功能
 //        try {

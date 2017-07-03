@@ -1,14 +1,11 @@
-import com.chen.email.ArticleInfoEmail;
+import com.chen.email.ArticleinfoEmail;
 import com.chen.pojo.Articleinfo;
 import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
-import org.apache.commons.mail.SimpleEmail;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -90,8 +87,8 @@ public class TestCommonsMail {
     @Test
     public void test_emal_module() throws Exception{
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ArticleInfoEmail email1 = applicationContext.getBean(ArticleInfoEmail.class);
-        ArticleInfoEmail email2 = applicationContext.getBean(ArticleInfoEmail.class);
+        ArticleinfoEmail email1 = applicationContext.getBean(ArticleinfoEmail.class);
+        ArticleinfoEmail email2 = applicationContext.getBean(ArticleinfoEmail.class);
         if(email1==email2)
             System.out.println("相同");
         else
@@ -109,7 +106,7 @@ public class TestCommonsMail {
     public void test_emal_object() throws Exception {
         Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ArticleInfoEmail email = applicationContext.getBean(ArticleInfoEmail.class);
+        ArticleinfoEmail email = applicationContext.getBean(ArticleinfoEmail.class);
         email.init("593191130@qq.com");
         email.add(articleinfo);
         email.send();

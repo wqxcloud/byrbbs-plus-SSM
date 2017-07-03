@@ -1,9 +1,7 @@
-import com.chen.email.ArticleInfoEmail;
 import com.chen.pojo.Articleinfo;
 import com.chen.pojo.ArticleinfoQueryVo;
 import com.chen.service.ArticleinfoService;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +26,7 @@ public class TestService {
         if(articleinfoService!=null) {
             ArticleinfoQueryVo articleinfoQueryVo = new ArticleinfoQueryVo();
             //测试邮件
-//            ArticleInfoEmail email = applicationContext.getBean(ArticleInfoEmail.class);
+//            ArticleinfoEmail email = applicationContext.getBean(ArticleinfoEmail.class);
 //            email.init("593191130@qq.com");
 
             System.out.println("page1");

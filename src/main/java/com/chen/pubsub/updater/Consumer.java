@@ -18,11 +18,26 @@ public class Consumer implements Runnable {
     private ConcurrentHashMap<String,PushRule> pushRules = null;
     private MessagePublisher messagePublisher = null;
 
-    public Consumer(ConcurrentLinkedQueue<Articleinfo> queue, ConcurrentHashMap<String,PushRule> pushRules, MessagePublisher messagePublisher) {
-        this.queue = queue;
-        this.pushRules = pushRules;
+    public Consumer(MessagePublisher messagePublisher) {
         this.messagePublisher = messagePublisher;
     }
+
+    public ConcurrentLinkedQueue<Articleinfo> getQueue() {
+        return queue;
+    }
+
+    public void setQueue(ConcurrentLinkedQueue<Articleinfo> queue) {
+        this.queue = queue;
+    }
+
+    public ConcurrentHashMap<String, PushRule> getPushRules() {
+        return pushRules;
+    }
+
+    public void setPushRules(ConcurrentHashMap<String, PushRule> pushRules) {
+        this.pushRules = pushRules;
+    }
+
     @Override
     public void run() {
         while (!queue.isEmpty()) {

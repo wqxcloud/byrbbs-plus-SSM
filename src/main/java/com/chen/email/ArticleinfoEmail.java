@@ -15,9 +15,8 @@ import java.util.Map;
  * Created by ryder on 2017/7/1.
  *
  */
-@Component
-@Scope("prototype")
-public class ArticleInfoEmail{
+
+public class ArticleinfoEmail {
     @Resource
     private HtmlEmail htmlEmail;
     @Resource
@@ -42,6 +41,8 @@ public class ArticleInfoEmail{
 
     }
     public void add(Articleinfo articleinfo){
+        if(articleinfo==null)
+            return;
         htmlMsg.append("<tr>");
 
         htmlMsg.append("<td noWrap>");
@@ -64,7 +65,6 @@ public class ArticleInfoEmail{
         htmlMsg.append(articleinfo.getArticle_url());
         htmlMsg.append("\">");
         htmlMsg.append("link");
-//        htmlMsg.append(articleinfo.getArticle_url());
         htmlMsg.append("</a></td>");
 
         htmlMsg.append("</tr>");

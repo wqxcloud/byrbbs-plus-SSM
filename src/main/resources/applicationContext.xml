@@ -15,6 +15,11 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
 
+    <!-- 自动扫描位置 -->
+    <context:component-scan base-package="com.chen">
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    </context:component-scan>
+
 
     <!-- 1.配置文件的加载 -->
     <context:property-placeholder location="classpath:db.properties,classpath:redis.properties,classpath:email.properties"/>
@@ -56,11 +61,6 @@
     <!--</bean>-->
 
     <!-- ++++++++++++++++++++++数据相关配置结束+++++++++++++++++++++ -->
-
-    <!-- 自动扫描位置 -->
-    <context:component-scan base-package="com.chen">
-        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
-    </context:component-scan>
 
     <!-- 访问静态资源,且静态文件存于webapp目录下 -->
     <mvc:default-servlet-handler/>
@@ -193,22 +193,68 @@
     <!-- ++++++++++++++++++++redis配置结束++++++++++++++++++++ -->
 
     <!-- ++++++++++++++++++++++发邮件相关++++++++++++++++++++ -->
-    <bean id="htmlEmal" class="org.apache.commons.mail.HtmlEmail" scope="prototype">
+    <bean id="htmlEmail" class="org.apache.commons.mail.HtmlEmail" scope="prototype">
         <property name="hostName" value="${commons.email.hostName}"/>
         <property name="smtpPort" value="${commons.email.smtpPort}"/>
         <property name="authenticator">
             <bean class="org.apache.commons.mail.DefaultAuthenticator">
-                <constructor-arg index="0" value="${commons.email.userName}"/>
-                <constructor-arg index="1" value="${commons.email.password}"/>
+                <constructor-arg name="userName" value="${commons.email.userName}"/>
+                <constructor-arg name="password" value="${commons.email.password}"/>
             </bean>
         </property>
         <property name="SSLOnConnect" value="${commons.email.SSLOnConnect}"/>
         <property name="charset" value="${commons.email.charset}"/>
         <property name="from" value="${commons.email.from}"/>
-        <property name="textMsg" value="${commons.email.textMsg}"/>
+        <property name="textMsg" value="这是一封html邮件，找一找加载按钮，单击它"/>
     </bean>
 
+    <bean id="articleinfoEmail" class="com.chen.email.ArticleinfoEmail" scope="prototype">
+    </bean>
+
+
     <!-- ++++++++++++++++++++每日新帖消息更新相关，生产消费者++++++++++++++++++++ -->
-    <bean id="articleinforUpdateManager" class="com.chen.pubsub.updater.ArticleinfoUpdateManager" init-method="init"/>
+    <bean id="articleinfoSubscriber" class="com.chen.pubsub.subscriber.ArticleinfoSubscriber" scope="prototype">
+        <constructor-arg name="redisTemplate" ref="redisTemplate"/>
+        <constructor-arg name="articleinfoEmail" ref="articleinfoEmail"/>
+    </bean>
+
+    <bean id="messagePublisher" class="com.chen.pubsub.publisher.MessagePublisher" scope="prototype">
+        <constructor-arg name="redisTemplate" ref="redisTemplate"/>
+    </bean>
+
+    <bean id="consumer" class="com.chen.pubsub.updater.Consumer" scope="prototype">
+        <constructor-arg name="messagePublisher" ref="messagePublisher">
+        </constructor-arg>
+    </bean>
+
+    <bean id="queue" class="java.util.concurrent.ConcurrentLinkedQueue"/>
+
+    <bean id="articleinforUpdateManager" class="com.chen.pubsub.updater.ArticleinfoUpdateManager" init-method="init">
+        <property name="THREAD_SIZE" value="10"/>
+        <property name="subManager" ref="subManager"/>
+        <property name="queue" ref="queue"/>
+        <property name="producer">
+            <bean class="com.chen.pubsub.updater.Producer">
+                <constructor-arg name="queue" ref="queue"/>
+            </bean>
+        </property>
+        <property name="messagePublisher" ref="messagePublisher"/>
+        <property name="consumers">
+            <list>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+                <ref bean="consumer"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="springConfigTool" class="com.chen.util.SpringConfigTool"/>
 
 </beans>
