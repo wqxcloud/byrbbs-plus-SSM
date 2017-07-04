@@ -11,6 +11,8 @@ public class PushRule {
     private String article_title_include;
     private String article_title_exclude;
     private Integer pushtime_type;
+    private Integer founder;     //创建者在用户表中的id
+    private String subscribers;
 
     public PushRule() {
         this.id = -1;
@@ -19,6 +21,24 @@ public class PushRule {
         this.article_title_include = "";
         this.article_title_exclude = "";
         this.pushtime_type = -1;
+        this.founder = -1;
+        this.subscribers = "";
+    }
+
+    public Integer getFounder() {
+        return founder;
+    }
+
+    public void setFounder(Integer founder) {
+        this.founder = founder;
+    }
+
+    public String getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(String subscribers) {
+        this.subscribers = subscribers;
     }
 
     public Integer getId() {
@@ -78,6 +98,8 @@ public class PushRule {
                 ", article_title_include='" + article_title_include + '\'' +
                 ", article_title_exclude='" + article_title_exclude + '\'' +
                 ", pushtime_type=" + pushtime_type +
+                ", founder='" + founder + '\'' +
+                ", subscribers=" + subscribers +
                 '}';
     }
 }

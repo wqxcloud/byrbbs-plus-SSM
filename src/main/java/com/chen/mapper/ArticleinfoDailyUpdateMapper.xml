@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.ArticleinfoDailyUpdateMapper">
+
+    <!--&lt;!&ndash;sql语句中的#{id}与Articleinfo对象中的属性一致(但改成idd不一致也可以)&ndash;&gt;-->
+    <!--<select id="findArticleinfoById" parameterType="int" resultType="com.chen.pojo.Articleinfo">-->
+        <!--select * from articleinfo where id=#{id}-->
+    <!--</select>-->
+
+    <select id="getTodayAll" resultType="com.chen.pojo.Articleinfo">
+        select * from articleinfohour where TO_DAYS(NOW()) - TO_DAYS(article_createtime) = 0 ORDER BY  article_createtime DESC
+    </select>
+
+
+</mapper>

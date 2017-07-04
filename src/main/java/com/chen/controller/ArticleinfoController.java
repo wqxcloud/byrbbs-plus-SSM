@@ -4,15 +4,20 @@ import com.chen.mapper.SectionNameMapper;
 import com.chen.pojo.Articleinfo;
 import com.chen.pojo.ArticleinfoQueryVo;
 import com.chen.pojo.SectionName;
+import com.chen.pubsub.publisher.MessagePublisher;
+import com.chen.pubsub.updater.ArticleinfoUpdateManager;
 import com.chen.service.ArticleinfoService;
 import com.chen.service.SectionNameService;
 import com.chen.service.impl.SectionNameServiceImpl;
 import com.github.pagehelper.PageInfo;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +33,13 @@ public class ArticleinfoController {
     @Resource
     private SectionNameService sectionNameService;
 
-    public volatile Map<String,SectionName>  sectionUrlToName;
+    @Resource
+    private ArticleinfoUpdateManager articleinfoUpdateManager;
+
+    public Map<String,SectionName>  sectionUrlToName;
     @RequestMapping("/firstPage")
     public String list(Map<String, Object> map,HttpSession session) {
         ArticleinfoQueryVo articleinfoQueryVo = null;
-
         sectionUrlToName = sectionNameService.UrlToNameMap();
         if(session.getAttribute("articleinfoQueryVo")==null){
             articleinfoQueryVo = new ArticleinfoQueryVo();

@@ -22,7 +22,7 @@ public class TestUser {
         UserMapper userMapper = (UserMapper) applicationContext.getBean("userMapper");
         User user = userMapper.findUserByUsername("chen");
         System.out.println(user);
-        System.out.println(userMapper.findRoles("bbb"));
+        System.out.println(userMapper.findRoles("chen"));
         System.out.println(userMapper.findPermissions("chen"));
     }
 }

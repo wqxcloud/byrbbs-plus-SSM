@@ -11,7 +11,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:applicationContext.xml</param-value>
+            <param-value>classpath:springmvc-servlet.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -73,5 +73,4 @@
         <error-code>404</error-code>
         <location>/pages/404.jsp</location>
     </error-page>
-
 </web-app>

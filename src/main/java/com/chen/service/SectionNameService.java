@@ -11,4 +11,6 @@ import java.util.Map;
  */
 public interface SectionNameService {
     public Map<String,SectionName> UrlToNameMap();
+    public void initMap();
+
 }
