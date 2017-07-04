@@ -72,9 +72,9 @@ public class SubManager {
                     } else {
                         User user = userService.findUserById(Integer.parseInt(subscriberId));
 //                        ArticleinfoSubscriber newSubscriber = new ArticleinfoSubscriber(redisTemplate);//user表格的userName就是邮箱地址
-//                        ArticleinfoSubscriber newSubscriber = (ArticleinfoSubscriber)springConfigTool.getBean("articleinfoSubscriber");
-                        //todo:还没改回去
-                        ArticleinfoSubscriber newSubscriber = articleinfoSubscriber;
+                        ArticleinfoSubscriber newSubscriber = (ArticleinfoSubscriber)springConfigTool.getBean("articleinfoSubscriber");
+                        //to/do:还没改回去
+//                        ArticleinfoSubscriber newSubscriber = articleinfoSubscriber;
                         newSubscriber.setName(user.getUserName());
                         useridToSubscriber.put(subscriberId, newSubscriber);
                         addSubInit(channelName, newSubscriber);

@@ -9,9 +9,7 @@ import org.springframework.context.ApplicationContextAware;
  *
  */
 
-//public class SpringConfigTool implements ApplicationContextAware {// extends ApplicationObjectSupport{
-public class SpringConfigTool{// extends ApplicationObjectSupport{
-
+public class SpringConfigTool implements ApplicationContextAware {// extends ApplicationObjectSupport{
     private static ApplicationContext ac = null;
     private static SpringConfigTool springConfigTool = null;
 

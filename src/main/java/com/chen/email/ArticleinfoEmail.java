@@ -25,7 +25,11 @@ public class ArticleinfoEmail {
     private SimpleDateFormat dateFormater = new SimpleDateFormat("MM-dd HH:mm");
     private StringBuffer htmlMsg = new StringBuffer(
             "<html><body><table border=\"1\" style=\"border-collapse: collapse\">" +
-                    "<tr><th noWrap>板块</th><th noWrap>标题</th><th noWrap>发帖人</th><th noWrap>发布时间</th><th noWrap>链接</th></tr>");
+                    "<tr><th noWrap>板块</th>" +
+                    "<th noWrap>标题</th>" +
+//                    "<th noWrap>发帖人</th>" +
+                    "<th noWrap>发布时间</th>" +
+                    "<th noWrap>链接</th></tr>");
 
     public void init(String emailTo){
         try {
@@ -49,13 +53,13 @@ public class ArticleinfoEmail {
         htmlMsg.append(sectionUrlToName.get(articleinfo.getSection_url()).getSection_name());
         htmlMsg.append("</td>");
 
-        htmlMsg.append("<td>");
+        htmlMsg.append("<td noWrap>");
         htmlMsg.append(articleinfo.getArticle_title());
         htmlMsg.append("</td>");
 
-        htmlMsg.append("<td noWrap align=\"center\">");
-        htmlMsg.append(articleinfo.getArticle_author());
-        htmlMsg.append("</td>");
+//        htmlMsg.append("<td noWrap align=\"center\">");
+//        htmlMsg.append(articleinfo.getArticle_author());
+//        htmlMsg.append("</td>");
 
         htmlMsg.append("<td noWrap align=\"center\">");
         htmlMsg.append(dateFormater.format(articleinfo.getArticle_createtime()));

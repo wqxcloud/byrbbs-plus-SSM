@@ -16,5 +16,6 @@ public class TestInit {
         new TestInitClass();
         String[] result = "".split(" ");
         System.out.println(result.length);
+        System.out.println("abc".contains(result[0]));
     }
 }

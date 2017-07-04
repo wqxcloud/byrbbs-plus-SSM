@@ -54,17 +54,24 @@ public class Consumer implements Runnable {
     }
     public boolean match(Articleinfo articleinfo,PushRule pushRule){
         if(pushRule.getSection_urls().contains(articleinfo.getSection_url())){
-            String[] includes = pushRule.getArticle_title_include().trim().split(" ");
-            for(int i=0;i<includes.length;i++){
-                if(!articleinfo.getArticle_title().contains(includes[i]))
-                    return false;
+            //检查需要包含的关键词
+            if(pushRule.getArticle_title_include()!=null && !pushRule.getArticle_title_include().trim().equals("")) {
+                String[] includes = pushRule.getArticle_title_include().trim().split(" ");
+                for (int i = 0; i < includes.length; i++) {
+                    if (!articleinfo.getArticle_title().contains(includes[i]))
+                        return false;
+                }
             }
-            String[] excludes = pushRule.getArticle_title_exclude().trim().split(" ");
-            for(int i=0;i<excludes.length;i++){
-                if(articleinfo.getArticle_title().contains(excludes[i]))
-                    return false;
+            //检查被排除的关键词
+            if(pushRule.getArticle_title_exclude()!=null && !pushRule.getArticle_title_exclude().trim().equals("")) {
+                String[] excludes = pushRule.getArticle_title_exclude().trim().split(" ");
+                for (int i = 0; i < excludes.length; i++) {
+                    if (articleinfo.getArticle_title().contains(excludes[i]))
+                        return false;
+                }
             }
             return true;
+
         }
         return false;
     }

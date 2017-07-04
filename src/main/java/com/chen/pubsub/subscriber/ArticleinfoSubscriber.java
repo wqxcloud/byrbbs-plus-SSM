@@ -10,7 +10,9 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Created by ryder on 2017/6/30.
@@ -18,7 +20,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class ArticleinfoSubscriber implements MessageListener {
     private ArticleinfoEmail articleinfoEmail;
-    //todo:修改为可自动排序的结构
     private final ConcurrentLinkedQueue<Articleinfo> rows = new ConcurrentLinkedQueue<>();
     private String name;
     private RedisTemplate<Serializable,Serializable> redisTemplate;
@@ -62,16 +63,19 @@ public class ArticleinfoSubscriber implements MessageListener {
 
         //一个存在于section_url中的特殊命令,用来表示发布结束，可以发送邮件了
         if("send_email".equals(articleinfo.getSection_url())){
-            System.out.println("发送邮件");
-//            articleinfoEmail.init(name);
-//            while (true){
-//                Articleinfo row = rows.poll();
-//                if(row!=null)
-//                    articleinfoEmail.add(row);
-//                else
-//                    break;
-//            }
-//            articleinfoEmail.send();
+            //无积累消息，不发邮件
+            if(rows.isEmpty())
+                return;
+
+            articleinfoEmail.init(name);
+            while (true){
+                Articleinfo row = rows.poll();
+                if(row!=null)
+                    articleinfoEmail.add(row);
+                else
+                    break;
+            }
+            articleinfoEmail.send();
         }
         else {
             System.out.println("用户："+name+",在channel："+channel+",收到内容："+articleinfo);

@@ -10,7 +10,7 @@
     <!--</select>-->
 
     <select id="getTodayAll" resultType="com.chen.pojo.Articleinfo">
-        select * from articleinfohour where TO_DAYS(NOW()) - TO_DAYS(article_createtime) = 0
+        select * from articleinfohour where TO_DAYS(NOW()) - TO_DAYS(article_createtime) = 0 ORDER BY  article_createtime DESC
     </select>
 
 

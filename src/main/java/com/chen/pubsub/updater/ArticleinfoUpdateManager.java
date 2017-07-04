@@ -11,7 +11,6 @@ import java.util.concurrent.*;
 
 /**
  * Created by ryder on 2017/7/2.
- *
  */
 public class ArticleinfoUpdateManager {
     private SubManager subManager;
@@ -22,7 +21,7 @@ public class ArticleinfoUpdateManager {
     private ExecutorService fixedThreadPool;
 
     private ConcurrentLinkedQueue<Articleinfo> queue = new ConcurrentLinkedQueue<>();
-    private ConcurrentHashMap<String,PushRule> pushRules = null;
+    private ConcurrentHashMap<String, PushRule> pushRules = null;
 
     public SubManager getSubManager() {
         return subManager;
@@ -72,37 +71,36 @@ public class ArticleinfoUpdateManager {
         this.THREAD_SIZE = THREAD_SIZE;
     }
 
-    private void init(){
+    private void init() {
         pushRules = subManager.getPushrules();
         fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
+
     }
+
     //定时执行此方法
-    public void update(){
+    public void update() {
         producer.run();
         //todo：还没改回去
-        for(int i=0;i<1;i++) {
+        for (int i = 0; i < 1; i++) {
             consumers[i].setQueue(queue);
             consumers[i].setPushRules(pushRules);
             fixedThreadPool.execute(consumers[i]);
         }
         //调用shutdown()时，ExecutorService 并不会马上关闭，而是不再接收新的任务
         //所以，在调用 shutdown() 方法之前提交到 ExecutorService 的任务都会执行
-        fixedThreadPool.shutdown();
-        while(true){
-            if(!fixedThreadPool.isTerminated()){
-                messagePublisher.broadcast(pushRules.keys(),MessagePublisher.SEND_EMAIL);
+
+        while (true) {
+            if (queue.isEmpty() && fixedThreadPool.isTerminated()) {
+                messagePublisher.broadcast(pushRules.keys(), MessagePublisher.SEND_EMAIL);
                 break;
             }
-            else{
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (Exception e){
-                }
+            if (queue.isEmpty())
+                fixedThreadPool.shutdown();
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
             }
         }
-
     }
-
 
 }
