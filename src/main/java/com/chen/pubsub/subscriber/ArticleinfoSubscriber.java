@@ -2,6 +2,7 @@ package com.chen.pubsub.subscriber;
 
 import com.chen.email.ArticleinfoEmail;
 import com.chen.pojo.Articleinfo;
+import com.chen.util.SpringConfigTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -23,9 +25,10 @@ public class ArticleinfoSubscriber implements MessageListener {
     private final ConcurrentLinkedQueue<Articleinfo> rows = new ConcurrentLinkedQueue<>();
     private String name;
     private RedisTemplate<Serializable,Serializable> redisTemplate;
+    private SpringConfigTool springConfigTool;
 
-    public ArticleinfoSubscriber(ArticleinfoEmail articleinfoEmail, RedisTemplate<Serializable, Serializable> redisTemplate) {
-        this.articleinfoEmail = articleinfoEmail;
+    public ArticleinfoSubscriber(SpringConfigTool springConfigTool, RedisTemplate<Serializable, Serializable> redisTemplate) {
+        this.springConfigTool = springConfigTool;
         this.redisTemplate = redisTemplate;
     }
 
@@ -66,7 +69,7 @@ public class ArticleinfoSubscriber implements MessageListener {
             //无积累消息，不发邮件
             if(rows.isEmpty())
                 return;
-
+            articleinfoEmail = (ArticleinfoEmail) springConfigTool.getBean("articleinfoEmail");
             articleinfoEmail.init(name);
             while (true){
                 Articleinfo row = rows.poll();

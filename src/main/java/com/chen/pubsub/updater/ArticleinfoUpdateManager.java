@@ -73,15 +73,15 @@ public class ArticleinfoUpdateManager {
 
     private void init() {
         pushRules = subManager.getPushrules();
-        fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
+//        fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
 
     }
 
     //定时执行此方法
     public void update() {
+        fixedThreadPool = Executors.newFixedThreadPool(THREAD_SIZE);
         producer.run();
-        //todo：还没改回去
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < THREAD_SIZE; i++) {
             consumers[i].setQueue(queue);
             consumers[i].setPushRules(pushRules);
             fixedThreadPool.execute(consumers[i]);

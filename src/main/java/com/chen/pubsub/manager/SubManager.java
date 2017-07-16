@@ -55,8 +55,8 @@ public class SubManager {
         return redisTemplate;
     }
 
-    @Resource
-    ArticleinfoSubscriber articleinfoSubscriber;
+//    @Resource
+//    ArticleinfoSubscriber articleinfoSubscriber;
 
     private void initfunc(){
         List<PushRule> rules = pushRuleService.findPushRule();
