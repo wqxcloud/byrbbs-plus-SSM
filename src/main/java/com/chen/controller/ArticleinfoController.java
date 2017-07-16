@@ -39,6 +39,7 @@ public class ArticleinfoController {
     public Map<String,SectionName>  sectionUrlToName;
     @RequestMapping("/firstPage")
     public String list(Map<String, Object> map,HttpSession session) {
+        articleinfoUpdateManager.update();
         ArticleinfoQueryVo articleinfoQueryVo = null;
         sectionUrlToName = sectionNameService.UrlToNameMap();
         if(session.getAttribute("articleinfoQueryVo")==null){

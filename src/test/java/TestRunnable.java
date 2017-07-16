@@ -35,6 +35,22 @@ public class TestRunnable implements Runnable {
         fixedThreadPool.execute(new Thread(t, "2号窗口") );
         fixedThreadPool.execute(new Thread(t, "3号窗口") );
         fixedThreadPool.shutdown();
+        while (true) {
+            if (fixedThreadPool.isTerminated()) {
+                break;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+        }
+        t.add(100);
+        t.add(99);
+        fixedThreadPool = Executors.newFixedThreadPool(10);
+        fixedThreadPool.execute(new Thread(t, "4号窗口") );
+        fixedThreadPool.execute(new Thread(t, "5号窗口") );
+        fixedThreadPool.execute(new Thread(t, "6号窗口") );
+        fixedThreadPool.shutdown();
 
 
     }

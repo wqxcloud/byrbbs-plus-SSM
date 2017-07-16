@@ -169,9 +169,14 @@
 
 
     <!-- ++++++++++++++++++++每日新帖消息更新相关，生产消费者++++++++++++++++++++ -->
+    <bean id="springConfigTool" class="com.chen.util.SpringConfigTool"/>
+
     <bean id="articleinfoSubscriber" class="com.chen.pubsub.subscriber.ArticleinfoSubscriber" scope="prototype">
+        <constructor-arg name="springConfigTool" ref="springConfigTool"/>
         <constructor-arg name="redisTemplate" ref="redisTemplate"/>
-        <constructor-arg name="articleinfoEmail" ref="articleinfoEmail"/>
+        <!--<constructor-arg name="articleinfoEmail">-->
+            <!--<bean class="com.chen.email.ArticleinfoEmail"/>-->
+        <!--</constructor-arg>-->
     </bean>
 
     <bean id="messagePublisher" class="com.chen.pubsub.publisher.MessagePublisher" scope="prototype">
@@ -210,7 +215,5 @@
             </list>
         </property>
     </bean>
-
-    <bean id="springConfigTool" class="com.chen.util.SpringConfigTool"/>
 
 </beans>

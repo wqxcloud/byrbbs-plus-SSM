@@ -93,23 +93,27 @@ public class TestCommonsMail {
             System.out.println("相同");
         else
             System.out.println("不同");
+//        email1.init("593191130@qq.com");
+//        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
+//        email1.add(articleinfo);
+//        email1.send();
 
-        HtmlEmail email3 = applicationContext.getBean(HtmlEmail.class);
-        HtmlEmail email4 = applicationContext.getBean(HtmlEmail.class);
-        if(email3==email4)
-            System.out.println("相同");
-        else
-            System.out.println("不同");
+//        HtmlEmail email3 = applicationContext.getBean(HtmlEmail.class);
+//        HtmlEmail email4 = applicationContext.getBean(HtmlEmail.class);
+//        if(email3==email4)
+//            System.out.println("相同");
+//        else
+//            System.out.println("不同");
     }
 
-    @Test
-    public void test_emal_object() throws Exception {
-        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ArticleinfoEmail email = applicationContext.getBean(ArticleinfoEmail.class);
-        email.init("593191130@qq.com");
-        email.add(articleinfo);
-        email.send();
-    }
+//    @Test
+//    public void test_emal_object() throws Exception {
+//        Articleinfo articleinfo = new Articleinfo(1,"section","title","titleurl",new Date(),100,"author");
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+//        ArticleinfoEmail email = applicationContext.getBean(ArticleinfoEmail.class);
+//        email.init("593191130@qq.com");
+//        email.add(articleinfo);
+//        email.send();
+//    }
 }
 

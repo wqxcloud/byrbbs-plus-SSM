@@ -17,7 +17,7 @@ import java.util.Map;
  */
 
 public class ArticleinfoEmail {
-    @Resource
+    @Resource()
     private HtmlEmail htmlEmail;
     @Resource
     private SectionNameService sectionNameService;
@@ -30,6 +30,10 @@ public class ArticleinfoEmail {
 //                    "<th noWrap>发帖人</th>" +
                     "<th noWrap>发布时间</th>" +
                     "<th noWrap>链接</th></tr>");
+
+    public HtmlEmail getHtmlEmail() {
+        return htmlEmail;
+    }
 
     public void init(String emailTo){
         try {
@@ -51,6 +55,7 @@ public class ArticleinfoEmail {
 
         htmlMsg.append("<td noWrap>");
         htmlMsg.append(sectionUrlToName.get(articleinfo.getSection_url()).getSection_name());
+//        htmlMsg.append(articleinfo.getSection_url());
         htmlMsg.append("</td>");
 
         htmlMsg.append("<td noWrap>");
@@ -83,6 +88,9 @@ public class ArticleinfoEmail {
             //todo:邮件失败的log
             e.printStackTrace();
         }
-
+    }
+    public void tail() throws Exception{
+        htmlMsg.append("</table></body></html>");
+        htmlEmail.setHtmlMsg(htmlMsg.toString());
     }
 }
